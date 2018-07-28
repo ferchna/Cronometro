@@ -43,7 +43,7 @@ public class TimerProgramacion implements ActionListener, Runnable {
     Timer cronometro;
     public int segundosUnidad, segundosDecena, minutosUnidad, minutosDecenas, horasUnidad, horasDecenas;
     IngresoDatos ingreDatos = new IngresoDatos();
-    IngresoTiempo ingreTiempo= new IngresoTiempo();
+    IngresoTiempo ingreTiempo = new IngresoTiempo();
 
     public TimerProgramacion(FormularioBotones btn, FormularioNumero nume, FormularioIngresoTiempo intTem) {
         segundosUnidad = 10;
@@ -77,9 +77,8 @@ public class TimerProgramacion implements ActionListener, Runnable {
         this.frmbotones.jbreinicio.setEnabled(false);
         this.frmbotones.setVisible(true);
         ingreDatos.editarJlabel(frmbotones, frmnumeros);
-        
-        //this.frmnumeros.setLocationRelativeTo(null);
 
+        //this.frmnumeros.setLocationRelativeTo(null);
     }
 
     public void go() {
@@ -102,7 +101,7 @@ public class TimerProgramacion implements ActionListener, Runnable {
             System.exit(0);
             evt = "";
         } else if (evt == "entraH") {
-           NumerosTiempo();
+            NumerosTiempo();
             evt = "";
         }//finevento
         else if (evt == "valError") {
@@ -127,12 +126,62 @@ public class TimerProgramacion implements ActionListener, Runnable {
             String textoInfe;
             texto = frmtexto.txtNombre.getText();
             textoInfe = frmtexto.txtInfer.getText();
-            if (texto.equals("") || textoInfe.equals("")) {
+            //validaciones de los textos
+
+            if (texto != null && textoInfe.equals(""))//validacion de texto superior  lleno, inferior vacio
+            {
                 String camVa = "INGRESE TEXTO";
+
+                if (texto.length() > 0 && texto.length() < 14) {
+
+                    frmbotones.textoMenu.setText(texto.toUpperCase());
+                    frmbotones.txtInfBtn.setText(camVa);
+                    System.out.println("Texto de cajas" + camVa);
+                    frmnumeros.textoIngresado.setText(texto.toUpperCase());
+                } else {
+
+                    Font fuente = new Font("sanserif", 1, 60);
+                    frmnumeros.textoIngresado.setFont(fuente);
+                    frmnumeros.textoIngresado.setText(texto.toUpperCase());
+                    Font fuenteBotn = new Font("sanserif", 1, 12);
+                    frmbotones.textoMenu.setFont(fuenteBotn);
+                    frmbotones.textoMenu.setText(texto.toUpperCase());
+                    frmbotones.txtInfBtn.setText(camVa);
+                }
+
+            }
+
+            if (texto.equals("") && textoInfe != null)//validacion de texto inferior y superior vacio
+            {
+                String camVa = "INGRESE TEXTO";
+
+                if (textoInfe.length() > 0 && textoInfe.length() < 14) {
+
+                    frmbotones.textoMenu.setText(camVa);
+                    frmbotones.txtInfBtn.setText(textoInfe.toUpperCase());
+                    System.out.println("Texto de cajas" + camVa);
+                    frmnumeros.textoInferior.setText(textoInfe.toUpperCase());
+                } else {
+
+                    Font fuente = new Font("sanserif", 1, 60);
+                    frmnumeros.textoInferior.setFont(fuente);
+                    frmnumeros.textoInferior.setText(textoInfe.toUpperCase());
+                    Font fuenteBotn = new Font("sanserif", 1, 12);
+                    frmbotones.txtInfBtn.setFont(fuenteBotn);
+                    frmbotones.txtInfBtn.setText(texto.toUpperCase());
+                    frmbotones.textoMenu.setText(camVa);
+                }
+
+            }
+
+            if (texto.equals("") && textoInfe.equals("")) {
+                String camVa = "INGRESE TEXTO";
+                System.out.print("Ingreso a la validacion de  vacios");
                 frmbotones.textoMenu.setText(camVa);
                 frmbotones.txtInfBtn.setText(camVa);
 
-            } else {
+            }
+            /*else {
                 if (texto.length() > 0 && texto.length() < 14) {
                     System.out.println("Este es el texto mas largo que se est6a ingresado" + texto);
                     frmbotones.textoMenu.setText(texto.toUpperCase());
@@ -149,7 +198,7 @@ public class TimerProgramacion implements ActionListener, Runnable {
                     frmbotones.textoMenu.setText(texto.toUpperCase());
                     frmbotones.txtInfBtn.setText(textoInfe.toUpperCase());
                 }
-            }
+            }*/
             iniciar();
             this.frmtexto.dispose();
             evt = "";
@@ -454,272 +503,267 @@ public class TimerProgramacion implements ActionListener, Runnable {
         this.frmErrores.setLocationRelativeTo(null);
 
     }
-    
-    
-    public void NumerosTiempo()
-    {
+
+    public void NumerosTiempo() {
         // iniciar();
-            String txt1 = frmIngreTiempo.jTextField1.getText();
-            String txt2 = frmIngreTiempo.jTextField2.getText();
-            frmIngreTiempo.dispose();
-            //formTexto();
-            if (txt1.length() != 0 && txt2.length() != 0) {
-                if (txt1.matches("[0-9]*") && txt2.matches("[0-9]*")) {
+        String txt1 = frmIngreTiempo.jTextField1.getText();
+        String txt2 = frmIngreTiempo.jTextField2.getText();
+        frmIngreTiempo.dispose();
+        //formTexto();
+        if (txt1.length() != 0 && txt2.length() != 0) {
+            if (txt1.matches("[0-9]*") && txt2.matches("[0-9]*")) {
 
-                    if (txt1.length() >= 3 && txt2.length() >= 3) {
-                        String errDat = "INGRESE VALORES ENTRE 99 O 59";
-                        frmErr();
-                        this.frmErrores.jlbError.setText(errDat);
-
-                    } else {
-
-                        formTexto();
-                        if (txt1.length() == 2 && txt2.length() == 2) { // MAYOR DE 10 HORAS Y MAYOR DE 10 MINUTOS
-                            int hu = Integer.parseInt(frmIngreTiempo.jTextField1.getText());
-                            int mi = Integer.parseInt(frmIngreTiempo.jTextField2.getText());
-                            if (hu <= 99 && mi <= 59) {
-                                String minUni = frmIngreTiempo.jTextField2.getText().substring(1);
-                                String minDec = frmIngreTiempo.jTextField2.getText();
-                                char mini;
-                                mini = minDec.charAt(0);
-                                String minus = String.valueOf(mini);
-                                System.out.println("el valor de mini " + mini);
-                                minutosDecenas = Integer.parseInt(minus);
-                                minutosUnidad = Integer.parseInt(minUni);
-                                String horUni = frmIngreTiempo.jTextField1.getText().substring(1);
-                                String hoDec = frmIngreTiempo.jTextField1.getText();
-                                char hor;
-                                hor = hoDec.charAt(0);
-                                String horus = String.valueOf(hor);
-                                horasUnidad = Integer.valueOf(horUni);
-                                horasDecenas = Integer.parseInt(horus);
-                                // iniciar();
-                                // frmnumeros.setVisible(true);
-                                this.frmnumeros.minutosUnidad.setText(String.valueOf(minutosUnidad));
-                                this.frmnumeros.minutosDecenas.setText(String.valueOf(minutosDecenas));
-                                this.frmnumeros.horasDecenas.setText(String.valueOf(horasDecenas));
-                                this.frmnumeros.horasUnidad.setText(String.valueOf(horasUnidad));
-                                this.frmbotones.jlHoDePe.setText(String.valueOf(horasDecenas));
-                                this.frmbotones.jLHoUPe.setText(String.valueOf(horasUnidad));
-                                this.frmbotones.jlMinDePeq.setText(String.valueOf(minutosDecenas));
-                                this.frmbotones.jLMinUPe.setText(String.valueOf(minutosUnidad));
-                            }//if hasta 99
-                            else {
-
-                                System.out.println("Ingrese datos correctos");
-
-                            }//if longitud
-                        } //if longitug que no supere de 2
-                        else if (txt1.length() == 1 && txt2.length() == 1) {// HORAS EN UNIDAD Y MINUTOS MENOR QUE 10
-                            String hr = "0" + txt1;
-                            String m = "0" + txt2;
-                            int hu = Integer.parseInt(frmIngreTiempo.jTextField1.getText());
-                            int mi = Integer.parseInt(frmIngreTiempo.jTextField2.getText());
-                            if (hu <= 99 && mi <= 59) {
-                                String minUni = m.substring(1);
-                                String minDec = m;
-                                char mini;
-                                mini = minDec.charAt(0);
-                                String minus = String.valueOf(mini);
-                                System.out.println("el valor de mini " + mini);
-                                minutosDecenas = Integer.parseInt(minus);
-                                minutosUnidad = Integer.parseInt(minUni);
-                                String horUni = hr.substring(1);
-                                String hoDec = hr;
-                                char hor;
-                                hor = hoDec.charAt(0);
-                                String horus = String.valueOf(hor);
-                                horasUnidad = Integer.valueOf(horUni);
-                                horasDecenas = Integer.parseInt(horus);
-                                // iniciar();
-                                // frmnumeros.setVisible(true);
-                                this.frmnumeros.minutosUnidad.setText(String.valueOf(minutosUnidad));
-                                this.frmnumeros.minutosDecenas.setText(String.valueOf(minutosDecenas));
-                                this.frmnumeros.horasDecenas.setText(String.valueOf(horasDecenas));
-                                this.frmnumeros.horasUnidad.setText(String.valueOf(horasUnidad));
-                                this.frmbotones.jlHoDePe.setText(String.valueOf(horasDecenas));
-                                this.frmbotones.jLHoUPe.setText(String.valueOf(horasUnidad));
-                                this.frmbotones.jlMinDePeq.setText(String.valueOf(minutosDecenas));
-                                this.frmbotones.jLMinUPe.setText(String.valueOf(minutosUnidad));;
-
-                            }
-
-                        }//FIN longitud de una unidad
-                        else if (txt1 == "0" && txt2.length() == 1) {//CERO HORAS CON  MINUTOS MENORES QUE 10
-                            String hr = "0" + txt1;
-                            String m = "0" + txt2;
-                            int hu = Integer.parseInt(frmIngreTiempo.jTextField1.getText());
-                            int mi = Integer.parseInt(frmIngreTiempo.jTextField2.getText());
-                            if (hu <= 99 && mi <= 59) {
-                                String minUni = m.substring(1);
-                                String minDec = m;
-                                char mini;
-                                mini = minDec.charAt(0);
-                                String minus = String.valueOf(mini);
-                                System.out.println("el valor de mini " + mini);
-                                minutosDecenas = Integer.parseInt(minus);
-                                minutosUnidad = Integer.parseInt(minUni);
-                                horasUnidad = 0;
-                                horasDecenas = 0;
-                                // iniciar();
-                                //frmnumeros.setVisible(true);
-                                this.frmnumeros.minutosUnidad.setText(String.valueOf(minutosUnidad));
-                                this.frmnumeros.minutosDecenas.setText(String.valueOf(minutosDecenas));
-                                this.frmnumeros.horasDecenas.setText(String.valueOf(horasDecenas));
-                                this.frmnumeros.horasUnidad.setText(String.valueOf(horasUnidad));
-                                this.frmbotones.jlHoDePe.setText(String.valueOf(horasDecenas));
-                                this.frmbotones.jLHoUPe.setText(String.valueOf(horasUnidad));
-                                this.frmbotones.jlMinDePeq.setText(String.valueOf(minutosDecenas));
-                                this.frmbotones.jLMinUPe.setText(String.valueOf(minutosUnidad));
-
-                            }
-
-                        }//if cuando la hora es cero
-                        else if (Integer.parseInt(txt1) == 0 && txt2.length() == 2) { //CERO HORAS Y MINUTOS MAYORES QUE 10
-                            System.out.println("entro al valor de cero");
-                            int hu = Integer.parseInt(frmIngreTiempo.jTextField1.getText());
-                            int mi = Integer.parseInt(frmIngreTiempo.jTextField2.getText());
-                            if (hu <= 99 && mi <= 59) {
-                                String minUni = frmIngreTiempo.jTextField2.getText().substring(1);
-                                String minDec = frmIngreTiempo.jTextField2.getText();
-                                char mini;
-                                mini = minDec.charAt(0);
-                                String minus = String.valueOf(mini);
-                                System.out.println("el valor de mini " + mini);
-                                minutosDecenas = Integer.parseInt(minus);
-                                minutosUnidad = Integer.parseInt(minUni);
-                                horasUnidad = 0;
-                                horasDecenas = 0;
-                                // iniciar();
-                                //frmnumeros.setVisible(true);
-                                this.frmnumeros.minutosUnidad.setText(String.valueOf(minutosUnidad));
-                                this.frmnumeros.minutosDecenas.setText(String.valueOf(minutosDecenas));
-                                this.frmnumeros.horasDecenas.setText(String.valueOf(horasDecenas));
-                                this.frmnumeros.horasUnidad.setText(String.valueOf(horasUnidad));
-                                this.frmbotones.jlHoDePe.setText(String.valueOf(horasDecenas));
-                                this.frmbotones.jLHoUPe.setText(String.valueOf(horasUnidad));
-                                this.frmbotones.jlMinDePeq.setText(String.valueOf(minutosDecenas));
-                                this.frmbotones.jLMinUPe.setText(String.valueOf(minutosUnidad));
-                            }
-                        }//if cuando la hora es 0 pero mas de 10 minutos
-                        else if (txt1.length() == 2 && Integer.parseInt(txt2) == 0) { //HORAS MAYORES Y MINUTOS IGUALES QUE 10
-                            System.out.println("Hola");
-                            int hu = Integer.parseInt(frmIngreTiempo.jTextField1.getText());
-                            int mi = Integer.parseInt(frmIngreTiempo.jTextField2.getText());
-                            if (hu <= 99 && mi <= 59) {
-                                minutosDecenas = 0;
-                                minutosUnidad = 0;
-                                String horUni = frmIngreTiempo.jTextField1.getText().substring(1);
-                                String hoDec = frmIngreTiempo.jTextField1.getText();
-                                char hor;
-                                hor = hoDec.charAt(0);
-                                String horus = String.valueOf(hor);
-                                horasUnidad = Integer.valueOf(horUni);
-                                horasDecenas = Integer.parseInt(horus);
-                                // iniciar();
-                                // frmnumeros.setVisible(true);
-                                this.frmnumeros.minutosUnidad.setText(String.valueOf(minutosUnidad));
-                                this.frmnumeros.minutosDecenas.setText(String.valueOf(minutosDecenas));
-                                this.frmnumeros.horasDecenas.setText(String.valueOf(horasDecenas));
-                                this.frmnumeros.horasUnidad.setText(String.valueOf(horasUnidad));
-                                this.frmbotones.jlHoDePe.setText(String.valueOf(horasDecenas));
-                                this.frmbotones.jLHoUPe.setText(String.valueOf(horasUnidad));
-                                this.frmbotones.jlMinDePeq.setText(String.valueOf(minutosDecenas));
-                                this.frmbotones.jLMinUPe.setText(String.valueOf(minutosUnidad));
-                            }
-
-                        }//fin if con mas de 10 horas y con 0 min
-                        else if (txt1.length() == 2 && txt2.length() == 1) {//HORAS MAYORES QUE 10 Y MINUTOS MENORES QUE 10
-                            System.out.println("hola dos");
-                            int hu = Integer.parseInt(frmIngreTiempo.jTextField1.getText());
-                            int mi = Integer.parseInt(frmIngreTiempo.jTextField2.getText());
-                            String m = "0" + txt2;
-                            if (hu <= 99 && mi <= 59) {
-                                String minUni = m.substring(1);
-                                String minDec = m;
-                                char mini;
-                                mini = minDec.charAt(0);
-                                String minus = String.valueOf(mini);
-                                System.out.println("el valor de mini " + mini);
-                                minutosDecenas = Integer.parseInt(minus);
-                                minutosUnidad = Integer.parseInt(minUni);
-                                String horUni = frmIngreTiempo.jTextField1.getText().substring(1);
-                                String hoDec = frmIngreTiempo.jTextField1.getText();
-                                char hor;
-                                hor = hoDec.charAt(0);
-                                String horus = String.valueOf(hor);
-                                horasUnidad = Integer.valueOf(horUni);
-                                horasDecenas = Integer.parseInt(horus);
-                                // iniciar();
-                                //frmnumeros.setVisible(true);
-                                this.frmnumeros.minutosUnidad.setText(String.valueOf(minutosUnidad));
-                                this.frmnumeros.minutosDecenas.setText(String.valueOf(minutosDecenas));
-                                this.frmnumeros.horasDecenas.setText(String.valueOf(horasDecenas));
-                                this.frmnumeros.horasUnidad.setText(String.valueOf(horasUnidad));
-                                this.frmbotones.jlHoDePe.setText(String.valueOf(horasDecenas));
-                                this.frmbotones.jLHoUPe.setText(String.valueOf(horasUnidad));
-                                this.frmbotones.jlMinDePeq.setText(String.valueOf(minutosDecenas));
-                                this.frmbotones.jLMinUPe.setText(String.valueOf(minutosUnidad));
-
-                            }
-                        }//fin if mas de 10 horas y con menos de 10 min 
-                        else if (txt1.length() == 1 && txt2.length() == 2) {// HORAS EN UNIDAD Y MINUTOS MAYORES QUE 10
-                            String hr = "0" + txt1;
-                            int hu = Integer.parseInt(frmIngreTiempo.jTextField1.getText());
-                            int mi = Integer.parseInt(frmIngreTiempo.jTextField2.getText());
-                            if (hu <= 99 && mi <= 59) {
-                                String minUni = frmIngreTiempo.jTextField2.getText().substring(1);
-                                String minDec = frmIngreTiempo.jTextField2.getText();
-                                char mini;
-                                mini = minDec.charAt(0);
-                                String minus = String.valueOf(mini);
-                                System.out.println("el valor de mini " + mini);
-                                minutosDecenas = Integer.parseInt(minus);
-                                minutosUnidad = Integer.parseInt(minUni);
-                                String horUni = hr.substring(1);
-                                String hoDec = hr;
-                                char hor;
-                                hor = hoDec.charAt(0);
-                                String horus = String.valueOf(hor);
-                                horasUnidad = Integer.valueOf(horUni);
-                                horasDecenas = Integer.parseInt(horus);
-                                // iniciar();
-                                //frmnumeros.setVisible(true);
-                                this.frmnumeros.minutosUnidad.setText(String.valueOf(minutosUnidad));
-                                this.frmnumeros.minutosDecenas.setText(String.valueOf(minutosDecenas));
-                                this.frmnumeros.horasDecenas.setText(String.valueOf(horasDecenas));
-                                this.frmnumeros.horasUnidad.setText(String.valueOf(horasUnidad));
-                                this.frmbotones.jlHoDePe.setText(String.valueOf(horasDecenas));
-                                this.frmbotones.jLHoUPe.setText(String.valueOf(horasUnidad));
-                                this.frmbotones.jlMinDePeq.setText(String.valueOf(minutosDecenas));
-                                this.frmbotones.jLMinUPe.setText(String.valueOf(minutosUnidad));;
-
-                            }
-                        }//fin if de  horas unidad y minutos mas de 10
-
-                    }
-                }//if matches
-                else {
-                    String errNu = "INGRESE NÚMEROS";
+                if (txt1.length() >= 3 && txt2.length() >= 3) {
+                    String errDat = "INGRESE VALORES ENTRE 99 O 59";
                     frmErr();
-                    this.frmErrores.jlbError.setText(errNu);
+                    this.frmErrores.jlbError.setText(errDat);
 
-                    System.out.println("Ingrese numeros");
+                } else {
+
+                    formTexto();
+                    if (txt1.length() == 2 && txt2.length() == 2) { // MAYOR DE 10 HORAS Y MAYOR DE 10 MINUTOS
+                        int hu = Integer.parseInt(frmIngreTiempo.jTextField1.getText());
+                        int mi = Integer.parseInt(frmIngreTiempo.jTextField2.getText());
+                        if (hu <= 99 && mi <= 59) {
+                            String minUni = frmIngreTiempo.jTextField2.getText().substring(1);
+                            String minDec = frmIngreTiempo.jTextField2.getText();
+                            char mini;
+                            mini = minDec.charAt(0);
+                            String minus = String.valueOf(mini);
+                            System.out.println("el valor de mini " + mini);
+                            minutosDecenas = Integer.parseInt(minus);
+                            minutosUnidad = Integer.parseInt(minUni);
+                            String horUni = frmIngreTiempo.jTextField1.getText().substring(1);
+                            String hoDec = frmIngreTiempo.jTextField1.getText();
+                            char hor;
+                            hor = hoDec.charAt(0);
+                            String horus = String.valueOf(hor);
+                            horasUnidad = Integer.valueOf(horUni);
+                            horasDecenas = Integer.parseInt(horus);
+                            // iniciar();
+                            // frmnumeros.setVisible(true);
+                            this.frmnumeros.minutosUnidad.setText(String.valueOf(minutosUnidad));
+                            this.frmnumeros.minutosDecenas.setText(String.valueOf(minutosDecenas));
+                            this.frmnumeros.horasDecenas.setText(String.valueOf(horasDecenas));
+                            this.frmnumeros.horasUnidad.setText(String.valueOf(horasUnidad));
+                            this.frmbotones.jlHoDePe.setText(String.valueOf(horasDecenas));
+                            this.frmbotones.jLHoUPe.setText(String.valueOf(horasUnidad));
+                            this.frmbotones.jlMinDePeq.setText(String.valueOf(minutosDecenas));
+                            this.frmbotones.jLMinUPe.setText(String.valueOf(minutosUnidad));
+                        }//if hasta 99
+                        else {
+
+                            System.out.println("Ingrese datos correctos");
+
+                        }//if longitud
+                    } //if longitug que no supere de 2
+                    else if (txt1.length() == 1 && txt2.length() == 1) {// HORAS EN UNIDAD Y MINUTOS MENOR QUE 10
+                        String hr = "0" + txt1;
+                        String m = "0" + txt2;
+                        int hu = Integer.parseInt(frmIngreTiempo.jTextField1.getText());
+                        int mi = Integer.parseInt(frmIngreTiempo.jTextField2.getText());
+                        if (hu <= 99 && mi <= 59) {
+                            String minUni = m.substring(1);
+                            String minDec = m;
+                            char mini;
+                            mini = minDec.charAt(0);
+                            String minus = String.valueOf(mini);
+                            System.out.println("el valor de mini " + mini);
+                            minutosDecenas = Integer.parseInt(minus);
+                            minutosUnidad = Integer.parseInt(minUni);
+                            String horUni = hr.substring(1);
+                            String hoDec = hr;
+                            char hor;
+                            hor = hoDec.charAt(0);
+                            String horus = String.valueOf(hor);
+                            horasUnidad = Integer.valueOf(horUni);
+                            horasDecenas = Integer.parseInt(horus);
+                            // iniciar();
+                            // frmnumeros.setVisible(true);
+                            this.frmnumeros.minutosUnidad.setText(String.valueOf(minutosUnidad));
+                            this.frmnumeros.minutosDecenas.setText(String.valueOf(minutosDecenas));
+                            this.frmnumeros.horasDecenas.setText(String.valueOf(horasDecenas));
+                            this.frmnumeros.horasUnidad.setText(String.valueOf(horasUnidad));
+                            this.frmbotones.jlHoDePe.setText(String.valueOf(horasDecenas));
+                            this.frmbotones.jLHoUPe.setText(String.valueOf(horasUnidad));
+                            this.frmbotones.jlMinDePeq.setText(String.valueOf(minutosDecenas));
+                            this.frmbotones.jLMinUPe.setText(String.valueOf(minutosUnidad));;
+
+                        }
+
+                    }//FIN longitud de una unidad
+                    else if (txt1 == "0" && txt2.length() == 1) {//CERO HORAS CON  MINUTOS MENORES QUE 10
+                        String hr = "0" + txt1;
+                        String m = "0" + txt2;
+                        int hu = Integer.parseInt(frmIngreTiempo.jTextField1.getText());
+                        int mi = Integer.parseInt(frmIngreTiempo.jTextField2.getText());
+                        if (hu <= 99 && mi <= 59) {
+                            String minUni = m.substring(1);
+                            String minDec = m;
+                            char mini;
+                            mini = minDec.charAt(0);
+                            String minus = String.valueOf(mini);
+                            System.out.println("el valor de mini " + mini);
+                            minutosDecenas = Integer.parseInt(minus);
+                            minutosUnidad = Integer.parseInt(minUni);
+                            horasUnidad = 0;
+                            horasDecenas = 0;
+                            // iniciar();
+                            //frmnumeros.setVisible(true);
+                            this.frmnumeros.minutosUnidad.setText(String.valueOf(minutosUnidad));
+                            this.frmnumeros.minutosDecenas.setText(String.valueOf(minutosDecenas));
+                            this.frmnumeros.horasDecenas.setText(String.valueOf(horasDecenas));
+                            this.frmnumeros.horasUnidad.setText(String.valueOf(horasUnidad));
+                            this.frmbotones.jlHoDePe.setText(String.valueOf(horasDecenas));
+                            this.frmbotones.jLHoUPe.setText(String.valueOf(horasUnidad));
+                            this.frmbotones.jlMinDePeq.setText(String.valueOf(minutosDecenas));
+                            this.frmbotones.jLMinUPe.setText(String.valueOf(minutosUnidad));
+
+                        }
+
+                    }//if cuando la hora es cero
+                    else if (Integer.parseInt(txt1) == 0 && txt2.length() == 2) { //CERO HORAS Y MINUTOS MAYORES QUE 10
+                        System.out.println("entro al valor de cero");
+                        int hu = Integer.parseInt(frmIngreTiempo.jTextField1.getText());
+                        int mi = Integer.parseInt(frmIngreTiempo.jTextField2.getText());
+                        if (hu <= 99 && mi <= 59) {
+                            String minUni = frmIngreTiempo.jTextField2.getText().substring(1);
+                            String minDec = frmIngreTiempo.jTextField2.getText();
+                            char mini;
+                            mini = minDec.charAt(0);
+                            String minus = String.valueOf(mini);
+                            System.out.println("el valor de mini " + mini);
+                            minutosDecenas = Integer.parseInt(minus);
+                            minutosUnidad = Integer.parseInt(minUni);
+                            horasUnidad = 0;
+                            horasDecenas = 0;
+                            // iniciar();
+                            //frmnumeros.setVisible(true);
+                            this.frmnumeros.minutosUnidad.setText(String.valueOf(minutosUnidad));
+                            this.frmnumeros.minutosDecenas.setText(String.valueOf(minutosDecenas));
+                            this.frmnumeros.horasDecenas.setText(String.valueOf(horasDecenas));
+                            this.frmnumeros.horasUnidad.setText(String.valueOf(horasUnidad));
+                            this.frmbotones.jlHoDePe.setText(String.valueOf(horasDecenas));
+                            this.frmbotones.jLHoUPe.setText(String.valueOf(horasUnidad));
+                            this.frmbotones.jlMinDePeq.setText(String.valueOf(minutosDecenas));
+                            this.frmbotones.jLMinUPe.setText(String.valueOf(minutosUnidad));
+                        }
+                    }//if cuando la hora es 0 pero mas de 10 minutos
+                    else if (txt1.length() == 2 && Integer.parseInt(txt2) == 0) { //HORAS MAYORES Y MINUTOS IGUALES QUE 10
+                        System.out.println("Hola");
+                        int hu = Integer.parseInt(frmIngreTiempo.jTextField1.getText());
+                        int mi = Integer.parseInt(frmIngreTiempo.jTextField2.getText());
+                        if (hu <= 99 && mi <= 59) {
+                            minutosDecenas = 0;
+                            minutosUnidad = 0;
+                            String horUni = frmIngreTiempo.jTextField1.getText().substring(1);
+                            String hoDec = frmIngreTiempo.jTextField1.getText();
+                            char hor;
+                            hor = hoDec.charAt(0);
+                            String horus = String.valueOf(hor);
+                            horasUnidad = Integer.valueOf(horUni);
+                            horasDecenas = Integer.parseInt(horus);
+                            // iniciar();
+                            // frmnumeros.setVisible(true);
+                            this.frmnumeros.minutosUnidad.setText(String.valueOf(minutosUnidad));
+                            this.frmnumeros.minutosDecenas.setText(String.valueOf(minutosDecenas));
+                            this.frmnumeros.horasDecenas.setText(String.valueOf(horasDecenas));
+                            this.frmnumeros.horasUnidad.setText(String.valueOf(horasUnidad));
+                            this.frmbotones.jlHoDePe.setText(String.valueOf(horasDecenas));
+                            this.frmbotones.jLHoUPe.setText(String.valueOf(horasUnidad));
+                            this.frmbotones.jlMinDePeq.setText(String.valueOf(minutosDecenas));
+                            this.frmbotones.jLMinUPe.setText(String.valueOf(minutosUnidad));
+                        }
+
+                    }//fin if con mas de 10 horas y con 0 min
+                    else if (txt1.length() == 2 && txt2.length() == 1) {//HORAS MAYORES QUE 10 Y MINUTOS MENORES QUE 10
+                        System.out.println("hola dos");
+                        int hu = Integer.parseInt(frmIngreTiempo.jTextField1.getText());
+                        int mi = Integer.parseInt(frmIngreTiempo.jTextField2.getText());
+                        String m = "0" + txt2;
+                        if (hu <= 99 && mi <= 59) {
+                            String minUni = m.substring(1);
+                            String minDec = m;
+                            char mini;
+                            mini = minDec.charAt(0);
+                            String minus = String.valueOf(mini);
+                            System.out.println("el valor de mini " + mini);
+                            minutosDecenas = Integer.parseInt(minus);
+                            minutosUnidad = Integer.parseInt(minUni);
+                            String horUni = frmIngreTiempo.jTextField1.getText().substring(1);
+                            String hoDec = frmIngreTiempo.jTextField1.getText();
+                            char hor;
+                            hor = hoDec.charAt(0);
+                            String horus = String.valueOf(hor);
+                            horasUnidad = Integer.valueOf(horUni);
+                            horasDecenas = Integer.parseInt(horus);
+                            // iniciar();
+                            //frmnumeros.setVisible(true);
+                            this.frmnumeros.minutosUnidad.setText(String.valueOf(minutosUnidad));
+                            this.frmnumeros.minutosDecenas.setText(String.valueOf(minutosDecenas));
+                            this.frmnumeros.horasDecenas.setText(String.valueOf(horasDecenas));
+                            this.frmnumeros.horasUnidad.setText(String.valueOf(horasUnidad));
+                            this.frmbotones.jlHoDePe.setText(String.valueOf(horasDecenas));
+                            this.frmbotones.jLHoUPe.setText(String.valueOf(horasUnidad));
+                            this.frmbotones.jlMinDePeq.setText(String.valueOf(minutosDecenas));
+                            this.frmbotones.jLMinUPe.setText(String.valueOf(minutosUnidad));
+
+                        }
+                    }//fin if mas de 10 horas y con menos de 10 min 
+                    else if (txt1.length() == 1 && txt2.length() == 2) {// HORAS EN UNIDAD Y MINUTOS MAYORES QUE 10
+                        String hr = "0" + txt1;
+                        int hu = Integer.parseInt(frmIngreTiempo.jTextField1.getText());
+                        int mi = Integer.parseInt(frmIngreTiempo.jTextField2.getText());
+                        if (hu <= 99 && mi <= 59) {
+                            String minUni = frmIngreTiempo.jTextField2.getText().substring(1);
+                            String minDec = frmIngreTiempo.jTextField2.getText();
+                            char mini;
+                            mini = minDec.charAt(0);
+                            String minus = String.valueOf(mini);
+                            System.out.println("el valor de mini " + mini);
+                            minutosDecenas = Integer.parseInt(minus);
+                            minutosUnidad = Integer.parseInt(minUni);
+                            String horUni = hr.substring(1);
+                            String hoDec = hr;
+                            char hor;
+                            hor = hoDec.charAt(0);
+                            String horus = String.valueOf(hor);
+                            horasUnidad = Integer.valueOf(horUni);
+                            horasDecenas = Integer.parseInt(horus);
+                            // iniciar();
+                            //frmnumeros.setVisible(true);
+                            this.frmnumeros.minutosUnidad.setText(String.valueOf(minutosUnidad));
+                            this.frmnumeros.minutosDecenas.setText(String.valueOf(minutosDecenas));
+                            this.frmnumeros.horasDecenas.setText(String.valueOf(horasDecenas));
+                            this.frmnumeros.horasUnidad.setText(String.valueOf(horasUnidad));
+                            this.frmbotones.jlHoDePe.setText(String.valueOf(horasDecenas));
+                            this.frmbotones.jLHoUPe.setText(String.valueOf(horasUnidad));
+                            this.frmbotones.jlMinDePeq.setText(String.valueOf(minutosDecenas));
+                            this.frmbotones.jLMinUPe.setText(String.valueOf(minutosUnidad));;
+
+                        }
+                    }//fin if de  horas unidad y minutos mas de 10
+
                 }
-
-            }//if de los campos vacios 
+            }//if matches
             else {
-
-                String errDat = "DATOS VACIOS";
+                String errNu = "INGRESE NÚMEROS";
                 frmErr();
-                this.frmErrores.jlbError.setText(errDat);
+                this.frmErrores.jlbError.setText(errNu);
 
+                System.out.println("Ingrese numeros");
             }
-        
-        
-        
+
+        }//if de los campos vacios 
+        else {
+
+            String errDat = "DATOS VACIOS";
+            frmErr();
+            this.frmErrores.jlbError.setText(errDat);
+
+        }
+
     }
-    
 
     private void devuelta() // boton reinicio
     {
@@ -820,5 +864,4 @@ public class TimerProgramacion implements ActionListener, Runnable {
 
     }
 
-   
 }//fin de clase TimerExe

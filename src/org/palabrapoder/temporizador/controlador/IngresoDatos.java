@@ -93,24 +93,26 @@ public class IngresoDatos extends JFrame {
                 if (e.getKeyCode() == confirmar) {
                     System.out.println("HOLA SALI DEL EDITOR");
                     textoCambioSup = frmbotones.textSuperIngre.getText();
-
                     frmbotones.textoMenu.setText(textoCambioSup);
                     frmbotones.textSuperIngre.setVisible(false);
                     frmbotones.textoMenu.setVisible(true);
 
                     if (textoCambioSup.length() > 0 && textoCambioSup.length() < 14) {
+                        frmbotones.textoMenu.setText(textoCambioSup.toUpperCase());
                         System.out.println("Este es el texto mas largo que se est6a ingresado" + textoCambioSup);
+                        Font fuente = new Font("sanserif", 1, 90);
+                        frmnumeros.textoIngresado.setFont(fuente);
                         frmnumeros.textoIngresado.setText(textoCambioSup.toUpperCase());
+                        
 
                     } else {
                         Font fuente = new Font("sanserif", 1, 60);
                         frmnumeros.textoIngresado.setFont(fuente);
                         frmnumeros.textoIngresado.setText(textoCambioSup.toUpperCase());
-
                         Font fuenteBotn = new Font("sanserif", 1, 12);
-                        // frmbotones.textoMenu.setFont(fuenteBotn);
-                        //frmbotones.textoMenu.setText(texto.toUpperCase());
-                        // frmbotones.txtInfBtn.setText(textoInfe.toUpperCase());
+                        frmbotones.textoMenu.setFont(fuenteBotn);
+                        frmbotones.textoMenu.setText(textoCambioSup.toUpperCase());
+                        
                     }
 
                 }//fin confirmar texto superior
@@ -140,17 +142,22 @@ public class IngresoDatos extends JFrame {
                     
 
                     if (textoCambioInf.length() > 0 && textoCambioInf.length() < 30) {
+                        frmbotones.txtInfBtn.setText(textoCambioInf.toUpperCase());
                         System.out.println("Este es el texto mas largo que se est6a ingresado del inferior" + textoCambioInf);
+                        Font fuente = new Font("sanserif", 1, 90);
+                        frmnumeros.textoInferior.setFont(fuente);
                         frmnumeros.textoInferior.setText(textoCambioInf.toUpperCase());
+                        frmnumeros.textoInferior.setText(textoCambioInf.toUpperCase());
+                       
+                             
 
                     } else {
                         Font fuente = new Font("sanserif", 1, 80);
                         frmnumeros.textoInferior.setFont(fuente);
                         frmnumeros.textoInferior.setText(textoCambioInf.toUpperCase());
                         Font fuenteBotn = new Font("sanserif", 1, 12);
-                        // frmbotones.textoMenu.setFont(fuenteBotn);
-                        //frmbotones.textoMenu.setText(texto.toUpperCase());
-                        // frmbotones.txtInfBtn.setText(textoInfe.toUpperCase());
+                        frmbotones.textoMenu.setFont(fuenteBotn);
+                        frmbotones.txtInfBtn.setText(textoCambioInf.toUpperCase());
                     }
 
                 }//fin confirmar
